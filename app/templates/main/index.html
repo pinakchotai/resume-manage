@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Resume Portal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2 text-center">
+        <h1 class="display-4 mb-4">Welcome to Resume Portal</h1>
+        <p class="lead mb-4">
+            A modern platform for submitting and managing resumes efficiently.
+            Upload your resume today and let us help connect you with opportunities.
+        </p>
+        
+        <div class="row mb-5">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Easy Submission</h5>
+                        <p class="card-text">Submit your resume in just a few clicks with our user-friendly interface.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Secure Storage</h5>
+                        <p class="card-text">Your information is safely stored and protected in our secure database.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Quick Response</h5>
+                        <p class="card-text">Receive instant confirmation and stay updated on your submission status.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <a href="{{ url_for('main.submit_resume') }}" class="btn btn-primary btn-lg">
+            Submit Your Resume
+        </a>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-8 offset-md-2">
+        <h2 class="text-center mb-4">How It Works</h2>
+        <div class="timeline">
+            <div class="step">
+                <h4>1. Fill the Form</h4>
+                <p>Complete the resume submission form with your personal and professional information.</p>
+            </div>
+            <div class="step">
+                <h4>2. Upload Resume</h4>
+                <p>Upload your resume in PDF or DOCX format (max 10MB).</p>
+            </div>
+            <div class="step">
+                <h4>3. Submit</h4>
+                <p>Review your information and submit. You'll receive a confirmation email immediately.</p>
+            </div>
+            <div class="step">
+                <h4>4. Track Status</h4>
+                <p>Use your reference number to track the status of your submission.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.step {
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.step h4 {
+    color: #0d6efd;
+    margin-bottom: 10px;
+}
+</style>
+{% endblock %} 

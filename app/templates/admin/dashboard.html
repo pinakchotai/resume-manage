@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Resume Portal{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1>Admin Dashboard</h1>
+    </div>
+</div>
+
+<!-- Database Status -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Database Status</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Status:</strong> 
+                            <span class="badge {% if db_info.status == 'connected' %}bg-success{% else %}bg-danger{% endif %}">
+                                {{ db_info.status }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Database:</strong> {{ db_info.database }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Collections:</strong> {{ db_info.collections|length }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Search and Filter -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" class="row g-3">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="search" value="{{ search }}"
+                               placeholder="Search by name, email, or summary">
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" name="skill">
+                            <option value="">Filter by skill</option>
+                            {% for skill in all_skills %}
+                            <option value="{{ skill }}" {% if skill == skill_filter %}selected{% endif %}>
+                                {{ skill }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Resumes List -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Submitted Resumes</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Skills</th>
+                                <th>Submission Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for resume in resumes %}
+                            <tr>
+                                <td>{{ resume.name }}</td>
+                                <td>{{ resume.email }}</td>
+                                <td>
+                                    {% for skill in resume.skills %}
+                                    <span class="badge bg-secondary">{{ skill }}</span>
+                                    {% endfor %}
+                                </td>
+                                <td>{{ resume.submission_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin.view_resume', resume_id=resume._id) }}" 
+                                       class="btn btn-sm btn-info">View</a>
+                                    <a href="{{ url_for('admin.download_resume', resume_id=resume._id) }}" 
+                                       class="btn btn-sm btn-success">Download</a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center">No resumes found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pagination -->
+{% if total > per_page %}
+<div class="row mt-4">
+    <div class="col-12">
+        <nav>
+            <ul class="pagination justify-content-center">
+                {% set pages = ((total - 1) // per_page) + 1 %}
+                {% for p in range(1, pages + 1) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link" 
+                       href="{{ url_for('admin.dashboard', page=p, search=search, skill=skill_filter) }}">
+                        {{ p }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.badge {
+    margin-right: 0.25rem;
+}
+.table td {
+    vertical-align: middle;
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Details - {{ resume.name }} - Resume Portal{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <!-- Personal Information -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Personal Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Name:</strong> {{ resume.name }}</p>
+                        <p><strong>Email:</strong> {{ resume.email }}</p>
+                        <p><strong>Phone:</strong> {{ resume.phone }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Submission Date:</strong> {{ resume.submission_date.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                        <p>
+                            <strong>Resume File:</strong>
+                            <a href="{{ url_for('admin.download_resume', resume_id=resume._id) }}" 
+                               class="btn btn-sm btn-success">
+                                Download Resume
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Summary -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Professional Summary</h5>
+            </div>
+            <div class="card-body">
+                <p>{{ resume.summary }}</p>
+            </div>
+        </div>
+
+        <!-- Skills -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Skills</h5>
+            </div>
+            <div class="card-body">
+                {% for skill in resume.skills %}
+                <span class="badge bg-primary">{{ skill }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <!-- Actions -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <a href="mailto:{{ resume.email }}" class="btn btn-primary">
+                        Send Email
+                    </a>
+                    <a href="{{ url_for('admin.download_resume', resume_id=resume._id) }}" 
+                       class="btn btn-success">
+                        Download Resume
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.badge {
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+</style>
+{% endblock %} 
